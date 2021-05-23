@@ -5,7 +5,7 @@ module Binance
       class << self
         def send!(api_key_type: :none, headers: {}, method: :get, path: "/", params: {}, security_type: :none, tld: Configuration.tld, api_key: nil, api_secret_key: nil)
           Configuration.validate_tld!(tld)
-          self.base_uri "https://api.binance.#{tld}"
+          self.base_uri "https://#{Configuration.domain_prefix}.#{tld}"
 
           raise Error.new(message: "invalid security type #{security_type}") unless security_types.include?(security_type)
           all_headers = default_headers(api_key_type: api_key_type, security_type: security_type, api_key: api_key)
