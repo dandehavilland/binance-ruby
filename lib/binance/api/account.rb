@@ -2,6 +2,13 @@ module Binance
   module Api
     class Account
       class << self
+        PATH_MAP = {
+          info: {
+            api: '/api/v3/account',
+            fapi: '/fapi/v2/account'
+          }
+        }
+
         def fees!(recvWindow: 5000, api_key: nil, api_secret_key: nil)
           timestamp = Configuration.timestamp
           params = { recvWindow: recvWindow, timestamp: timestamp }
@@ -13,7 +20,7 @@ module Binance
         def info!(recvWindow: 5000, api_key: nil, api_secret_key: nil)
           timestamp = Configuration.timestamp
           params = { recvWindow: recvWindow, timestamp: timestamp }
-          Request.send!(api_key_type: :read_info, path: "/#{Configuration.api_prefix}/v3/account",
+          Request.send!(api_key_type: :read_info, path: PATH_MAP.dig(:info, Configuration.target_api.to_sym),
                         params: params.delete_if { |key, value| value.nil? },
                         security_type: :user_data, api_key: api_key, api_secret_key: api_secret_key)
         end

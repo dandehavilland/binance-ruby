@@ -1,12 +1,19 @@
 module Binance
   module Api
     class << self
+      PATH_MAP = {
+        candlesticks: {
+          api: '/api/v1/klines',
+          fapi: '/fapi/v1/klines'
+        }
+      }
+
       # Valid limits:[5, 10, 20, 50, 100, 500, 1000]
       def candlesticks!(endTime: nil, interval: nil, limit: 500, startTime: nil, symbol: nil, api_key: nil, api_secret_key: nil)
         raise Error.new(message: "interval is required") unless interval
         raise Error.new(message: "symbol is required") unless symbol
         params = { endTime: endTime, interval: interval, limit: limit, startTime: startTime, symbol: symbol }
-        Request.send!(api_key_type: :read_info, path: "/api/v1/klines", params: params,
+        Request.send!(api_key_type: :read_info, path: PATH_MAP.dig(:candlesticks, Configuration.target_api.to_sym), params: params,
                       api_key: api_key, api_secret_key: api_secret_key)
       end
 

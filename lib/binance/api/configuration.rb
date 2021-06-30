@@ -6,14 +6,14 @@ module Binance
     class Configuration
       class << self
         attr_writer :api_key, :locale, :read_info_api_key, :secret_key,
-          :trading_api_key, :withdrawals_api_key, :subdomain, :target_api
+          :trading_api_key, :withdrawals_api_key, :target_api
 
         def domain_prefix
-          "#{subdomain || "api"}.binance."
+          "#{target_api}.binance"
         end
 
-        def api_prefix
-          "#{api_type || "api"}"
+        def target_api
+          @target_api || 'api'
         end
 
         def api_key(type: nil)
